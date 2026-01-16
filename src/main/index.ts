@@ -1,6 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
-import { electronApp, optimizer } from '@electron-toolkit/utils';
+import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import { chromeUserAgent } from './utils';
 import icon from '../../resources/icon.png?asset';
 import css from './style.css?inline';
@@ -33,15 +33,17 @@ const createWindow = () => {
         return { action: 'deny' };
     });
 
+    // spoof Chrome user agent to avoid being detected as Electron
+    // https://stackoverflow.com/a/79406250
+    mainWindow.webContents.setUserAgent(chromeUserAgent('144.0.0.0'));
+
+    if (is.dev) mainWindow.webContents.openDevTools();
+
     mainWindow.loadURL('https://web.whatsapp.com');
 };
 
 app.whenReady().then(() => {
     electronApp.setAppUserModelId('com.wassapp.desktop');
-
-    // spoof Chrome user agent to avoid being detected as Electron
-    // https://stackoverflow.com/a/79406250
-    app.userAgentFallback = chromeUserAgent('144.0.0.0');
 
     app.on('browser-window-created', (_, window) => {
         optimizer.watchWindowShortcuts(window);
