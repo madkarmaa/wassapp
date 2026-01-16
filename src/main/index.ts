@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron';
+import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import { chromeUserAgent } from './utils';
@@ -20,7 +20,7 @@ const createWindow = () => {
         }
     });
 
-    mainWindow.setMenu(null);
+    Menu.setApplicationMenu(null);
 
     mainWindow.on('ready-to-show', () => {
         mainWindow.maximize();
