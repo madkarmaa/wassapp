@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import { chromeUserAgent } from './utils';
+import { APP_ID, APP_NAME, WHATSAPP_WEB_URL } from './utils/constants';
 import icon from '../../resources/icon.png?asset';
 import css from './style.css?inline';
 
@@ -24,6 +25,9 @@ const createWindow = () => {
         mainWindow.show();
     });
 
+    mainWindow.setTitle(APP_NAME);
+    mainWindow.on('page-title-updated', (e) => e.preventDefault());
+
     mainWindow.webContents.on('dom-ready', () => {
         mainWindow.webContents.insertCSS(css);
     });
@@ -39,11 +43,11 @@ const createWindow = () => {
 
     if (is.dev) mainWindow.webContents.openDevTools();
 
-    mainWindow.loadURL('https://web.whatsapp.com');
+    mainWindow.loadURL(WHATSAPP_WEB_URL);
 };
 
 app.whenReady().then(() => {
-    electronApp.setAppUserModelId('com.wassapp.desktop');
+    electronApp.setAppUserModelId(APP_ID);
 
     app.on('browser-window-created', (_, window) => {
         optimizer.watchWindowShortcuts(window);

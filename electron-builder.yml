@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: wassapp
+appId: com.wassapp.desktop
+productName: WassApp
 directories:
     buildResources: build
 files:
