@@ -12,7 +12,6 @@ import {
     WHATSAPP_WEB_URL
 } from '../common/constants';
 import icon from '../../resources/icon.png?asset';
-import css from './style.css?inline';
 import { taggedLogger } from '../common/logger';
 
 const logger = taggedLogger('main');
@@ -45,10 +44,6 @@ const createWindow = () => {
 
     mainWindow.setTitle(APP_NAME);
     mainWindow.on('page-title-updated', (e) => e.preventDefault());
-
-    mainWindow.webContents.on('dom-ready', () => {
-        mainWindow.webContents.insertCSS(css);
-    });
 
     mainWindow.webContents.setWindowOpenHandler((details) => {
         shell.openExternal(details.url);

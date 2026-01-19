@@ -1,9 +1,10 @@
 import { webFrame, ipcRenderer } from 'electron';
+import css from './style.css?inline';
 import { taggedLogger } from '../common/logger';
 
 const logger = taggedLogger('preload');
 
-function injectScript() {
+const injectScript = () => {
     try {
         const script = ipcRenderer.sendSync('get-injected-script');
         if (script && typeof script === 'string') {
@@ -14,6 +15,17 @@ function injectScript() {
     } catch (e) {
         logger.error('Error injecting script:', e);
     }
-}
+};
 
+const injectCSS = () => {
+    try {
+        logger.info('Injecting CSS into renderer process...');
+        webFrame.insertCSS(css);
+        logger.info('CSS injected successfully.');
+    } catch (e) {
+        logger.error('Error injecting CSS:', e);
+    }
+};
+
+injectCSS();
 injectScript();
