@@ -4,7 +4,7 @@ import type { Mod, ModulesMap } from './types';
 const logger = taggedLogger('inject');
 
 const bootstrap = async () => {
-    logger.info('Waiting for WhatsApp Web internal modules...');
+    logger.info('Waiting for internal modules...');
 
     const requireHook = await new Promise<typeof window.require>((resolve) => {
         if (typeof window.require !== 'undefined') return resolve(window.require);
@@ -15,14 +15,9 @@ const bootstrap = async () => {
             get: () => windowRequire,
             set: (value) => {
                 windowRequire = value;
+                if (!value) return;
 
-                Object.defineProperty(window, 'require', {
-                    value: windowRequire,
-                    writable: true,
-                    configurable: true,
-                    enumerable: true
-                });
-
+                logger.info('Detected internal require function');
                 resolve(value);
             }
         });
@@ -30,14 +25,14 @@ const bootstrap = async () => {
 
     let modulesMap: ModulesMap | undefined;
     try {
-        modulesMap = requireHook('__debug')?.modulesMap as ModulesMap | undefined;
+        modulesMap = requireHook('__debug')?.modulesMap as typeof modulesMap;
     } catch (error) {
-        logger.error('Failed to get internal modules map:', error);
-        return undefined;
+        logger.error('Failed to get internal modules:', error);
+        return { modulesMap, requireHook };
     }
 
     logger.info('Internal modules intercepted');
-    return modulesMap;
+    return { modulesMap, requireHook };
 };
 
 const loadMods = async (modules?: ModulesMap) => {
@@ -60,4 +55,15 @@ const loadMods = async (modules?: ModulesMap) => {
     );
 };
 
-bootstrap().then(loadMods);
+bootstrap().then(async ({ modulesMap, requireHook }) => {
+    logger.info('Stopping execution to load mods...');
+    await loadMods(modulesMap);
+
+    Object.defineProperty(window, 'require', {
+        value: requireHook,
+        writable: true,
+        configurable: true,
+        enumerable: true
+    });
+    logger.info('Resumed normal execution');
+});
