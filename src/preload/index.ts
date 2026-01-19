@@ -1,20 +1,19 @@
-import { contextBridge, ipcRenderer } from 'electron';
-import { electronAPI } from '@electron-toolkit/preload';
+import { webFrame, ipcRenderer } from 'electron';
+import { taggedLogger } from '../common/logger';
 
-const api = {
-    ping: () => ipcRenderer.send('ping')
-};
+const logger = taggedLogger('preload');
 
-if (process.contextIsolated) {
+function injectScript() {
     try {
-        contextBridge.exposeInMainWorld('electron', electronAPI);
-        contextBridge.exposeInMainWorld('api', api);
-    } catch (error) {
-        console.error(error);
+        const script = ipcRenderer.sendSync('get-injected-script');
+        if (script && typeof script === 'string') {
+            logger.info('Injecting script into renderer process...');
+            webFrame.executeJavaScript(script);
+            logger.info('Script injected successfully.');
+        } else logger.error('Failed to retrieve injected script from main process.');
+    } catch (e) {
+        logger.error('Error injecting script:', e);
     }
-} else {
-    // @ts-ignore (define in dts)
-    window.electron = electronAPI;
-    // @ts-ignore (define in dts)
-    window.api = api;
 }
+
+injectScript();

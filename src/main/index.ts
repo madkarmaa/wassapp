@@ -1,5 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron';
 import { join } from 'path';
+import { readFileSync } from 'fs';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import {
     APP_ID,
@@ -8,11 +9,15 @@ import {
     DEFAULT_WIDTH,
     MIN_HEIGHT,
     MIN_WIDTH,
-    USER_AGENT,
     WHATSAPP_WEB_URL
-} from './utils/constants';
+} from '../common/constants';
 import icon from '../../resources/icon.png?asset';
 import css from './style.css?inline';
+import { taggedLogger } from '../common/logger';
+
+const logger = taggedLogger('main');
+const USER_AGENT =
+    `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${process.versions.chrome.split('.')[0]}.0.0.0 Safari/537.36` as const;
 
 const createWindow = () => {
     const mainWindow = new BrowserWindow({
@@ -26,7 +31,8 @@ const createWindow = () => {
         ...(process.platform === 'linux' ? { icon } : {}),
         webPreferences: {
             preload: join(import.meta.dirname, '../preload/index.js'),
-            sandbox: false
+            sandbox: true,
+            contextIsolation: true
         }
     });
 
@@ -65,7 +71,19 @@ app.whenReady().then(() => {
         optimizer.watchWindowShortcuts(window);
     });
 
-    ipcMain.on('ping', () => console.log('pong'));
+    ipcMain.on('ping', () => logger.log('pong'));
+
+    ipcMain.on('get-injected-script', (event) => {
+        logger.info('Received request for injected script');
+        const injectedPath = join(import.meta.dirname, '../renderer/inject.js');
+        try {
+            event.returnValue = readFileSync(injectedPath, 'utf-8');
+            logger.info('Successfully read injected script from:', injectedPath);
+        } catch (err) {
+            logger.error('Failed to read injected script from:', injectedPath, err);
+            event.returnValue = '';
+        }
+    });
 
     createWindow();
 
