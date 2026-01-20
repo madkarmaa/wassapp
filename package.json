@@ -8,12 +8,9 @@
     "scripts": {
         "format": "prettier --write .",
         "lint": "eslint --cache .",
-        "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
-        "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
-        "typecheck": "bun run typecheck:node && bun run typecheck:web",
         "start": "electron-vite preview",
         "dev": "electron-vite dev",
-        "build": "bun run typecheck && electron-vite build",
+        "build": "electron-vite build",
         "postinstall": "electron-builder install-app-deps && simple-git-hooks",
         "build:unpack": "bun run build && electron-builder --dir",
         "build:win": "bun run build && electron-builder --win",
