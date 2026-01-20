@@ -1,6 +1,6 @@
 import { taggedLogger } from '@common/logger';
 import { WHATSAPP_DEBUG_MODULE } from '@common/constants';
-import type { JsModulesMap } from './types';
+import type { JsModulesMap } from '@lib/types';
 
 const logger = taggedLogger('hook');
 

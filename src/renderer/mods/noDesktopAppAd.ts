@@ -1,8 +1,7 @@
 import { taggedLogger } from '@common/logger';
-import type { Mod } from '@lib/types';
 import { byId } from '@lib/modules/finders';
 import { findModule } from '@lib/modules';
-import { modMetadata } from '@lib/metadata';
+import { modMetadata, type Mod } from '@lib/mods';
 
 const MODULE_ID = 'WAWebDesktopUpsellUtils' as const;
 type Exports = {
@@ -17,7 +16,7 @@ const METADATA = modMetadata({
 
 const logger = taggedLogger(METADATA.id);
 
-const mod = {
+export default {
     ...METADATA,
     execute: async (modules) => {
         const module = await findModule<Exports>(modules, byId(MODULE_ID));
@@ -26,5 +25,3 @@ const mod = {
         module.exports.getUserDesktopOs = () => null;
     }
 } satisfies Mod;
-
-export default mod;

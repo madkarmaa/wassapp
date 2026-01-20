@@ -1,5 +1,6 @@
 import { taggedLogger } from '@common/logger';
-import type { Mod, JsModulesMap } from '@lib/types';
+import type { JsModulesMap } from '@lib/types';
+import type { Mod } from '@lib/mods';
 import { hookModuleLoader } from '@lib/hook';
 
 const logger = taggedLogger('inject');

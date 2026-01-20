@@ -1,9 +1,8 @@
 import type * as ReactType from 'react';
 import { taggedLogger } from '@common/logger';
-import type { Mod } from '@lib/types';
 import { byId } from '@lib/modules/finders';
 import { findModule } from '@lib/modules';
-import { modMetadata } from '@lib/metadata';
+import { modMetadata, type Mod } from '@lib/mods';
 
 const MODULE_ID = 'React' as const;
 const METADATA = modMetadata({
@@ -14,7 +13,7 @@ const METADATA = modMetadata({
 
 const logger = taggedLogger(METADATA.id);
 
-const mod = {
+export default {
     ...METADATA,
     execute: async (modules) => {
         const reactModule = await findModule<typeof ReactType>(modules, byId(MODULE_ID));
@@ -25,5 +24,3 @@ const mod = {
         logger.info(React.createElement);
     }
 } satisfies Mod;
-
-export default mod;
