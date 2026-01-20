@@ -1,6 +1,6 @@
 import { WHATSAPP_DEBUG_MODULE } from '../common/constants';
 import { taggedLogger } from '../common/logger';
-import type { Mod, ModulesMap } from './types';
+import type { Mod, JsModulesMap } from './types';
 
 const logger = taggedLogger('inject');
 
@@ -17,7 +17,7 @@ Object.defineProperty(window, 'require', {
             try {
                 logger.info(`Attempting to load ${WHATSAPP_DEBUG_MODULE} module...`);
 
-                const modules = req?.(WHATSAPP_DEBUG_MODULE)?.modulesMap as ModulesMap;
+                const modules = req?.(WHATSAPP_DEBUG_MODULE)?.modulesMap as JsModulesMap;
                 if (!modules) return;
 
                 logger.info(`${WHATSAPP_DEBUG_MODULE} module loaded, loading mods...`);
@@ -29,7 +29,7 @@ Object.defineProperty(window, 'require', {
     }
 });
 
-const loadMods = (modules: ModulesMap) => {
+const loadMods = (modules: JsModulesMap) => {
     const mods = import.meta.glob('./mods/*.ts', { eager: true });
 
     Promise.all(

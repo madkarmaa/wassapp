@@ -1,17 +1,15 @@
-export type WebpackModule<Exports extends object = object> = {
+export type JsModule<Exports extends object = object> = {
     id: string;
     exports: Exports | null;
     defaultExport?: 'default' extends keyof Exports ? Exports['default'] : object;
     [key: string]: unknown;
 };
 
-export type ReadyWebpackModule<Exports extends object = object> = Required<
-    WebpackModule<Exports>
-> & {
+export type ReadyJsModule<Exports extends object = object> = Required<JsModule<Exports>> & {
     exports: Exports;
 };
 
-export type ModulesMap = Record<string, WebpackModule | null>;
+export type JsModulesMap = Record<string, JsModule | null>;
 
 export type ModId = Brand<string, 'mod-id'>;
 
@@ -23,5 +21,5 @@ export type ModMetadata = {
 };
 
 export type Mod = ModMetadata & {
-    execute: (modules: ModulesMap) => MaybePromise<void>;
+    execute: (modules: JsModulesMap) => MaybePromise<void>;
 };
