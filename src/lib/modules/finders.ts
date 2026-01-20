@@ -1,4 +1,6 @@
-import type { JsModuleFinder } from '@lib/types';
+import type { ReadyJsModule } from '@lib/types';
+
+export type JsModuleFinder = (module: ReadyJsModule) => boolean;
 
 export const byId =
     (id: string): JsModuleFinder =>
