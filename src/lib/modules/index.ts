@@ -1,10 +1,8 @@
-import type { JsModulesMap, ReadyJsModule, JsModule } from './types';
-
-type Predicate = (module: ReadyJsModule) => boolean;
+import type { JsModulesMap, ReadyJsModule, JsModule, JsModuleFinder } from '@lib/types';
 
 export const findModule = async <Exports extends object = object>(
     modules: JsModulesMap,
-    ...predicates: Predicate[]
+    ...finders: JsModuleFinder[]
 ): Promise<ReadyJsModule<Exports> | null> => {
     const checkModules = () => {
         let foundMatch: ReadyJsModule<Exports> | null = null;
@@ -17,7 +15,7 @@ export const findModule = async <Exports extends object = object>(
             if (!module.exports) allModulesLoaded = false;
             else if (
                 module.exports &&
-                predicates.every((predicate) => predicate(module as ReadyJsModule))
+                finders.every((predicate) => predicate(module as ReadyJsModule))
             )
                 foundMatch = module as ReadyJsModule<Exports>;
         }
@@ -34,13 +32,3 @@ export const findModule = async <Exports extends object = object>(
         await new Promise((resolve) => setTimeout(resolve, 100));
     }
 };
-
-export const byId =
-    (id: string): Predicate =>
-    (module) =>
-        module.id === id;
-
-export const byExports =
-    (...exports: string[]): Predicate =>
-    (module) =>
-        exports.every((exportName) => exportName in module.exports);

@@ -11,6 +11,8 @@ export type ReadyJsModule<Exports extends object = object> = Required<JsModule<E
 
 export type JsModulesMap = Record<string, JsModule | null>;
 
+export type JsModuleFinder = (module: ReadyJsModule) => boolean;
+
 export type ModId = Brand<string, 'mod-id'>;
 
 export type ModMetadata = {

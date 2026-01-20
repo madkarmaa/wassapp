@@ -1,13 +1,17 @@
 {
-    "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
-    "include": ["electron.vite.config.*", "src/main/**/*"],
+    "extends": ["./tsconfig.base.json", "@electron-toolkit/tsconfig/tsconfig.node.json"],
+    "include": ["electron.vite.config.*", "src/main/**/*", "src/common/**/*"],
     "compilerOptions": {
         "composite": true,
         "types": ["electron-vite/node"],
         "baseUrl": ".",
         "paths": {
             "@common": ["src/common"],
-            "@common/*": ["src/common/*"]
+            "@common/*": ["src/common/*"],
+            "@main": ["src/main"],
+            "@main/*": ["src/main/*"],
+            "@resources": ["resources"],
+            "@resources/*": ["resources/*"]
         }
     }
 }

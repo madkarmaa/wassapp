@@ -9,7 +9,7 @@ import {
     MIN_WIDTH,
     WHATSAPP_WEB_URL
 } from '@common/constants';
-import icon from '../../resources/icon.png?asset';
+import icon from '@resources/icon.png?asset';
 
 const USER_AGENT =
     `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${process.versions.chrome.split('.')[0]}.0.0.0 Safari/537.36` as const;

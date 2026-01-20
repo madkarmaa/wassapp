@@ -1,6 +1,8 @@
 import { taggedLogger } from '@common/logger';
-import type { Mod } from '@lib';
-import { byId, findModule, modMetadata } from '@lib';
+import type { Mod } from '@lib/types';
+import { byId } from '@lib/modules/finders';
+import { findModule } from '@lib/modules';
+import { modMetadata } from '@lib/metadata';
 
 const MODULE_ID = 'WAWebDesktopUpsellUtils' as const;
 type Exports = {

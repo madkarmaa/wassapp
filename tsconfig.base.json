@@ -1,0 +1,6 @@
+{
+    "compilerOptions": {
+        "types": ["vite/client"]
+    },
+    "files": ["src/globals.d.ts"]
+}

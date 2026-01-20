@@ -1,4 +1,4 @@
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
+import { defineConfig } from 'electron-vite';
 import { resolve } from 'path';
 import { globSync } from 'glob';
 
@@ -15,18 +15,19 @@ export default defineConfig({
     main: {
         resolve: {
             alias: {
-                '@common': resolve('src/common')
+                '@common': resolve('src/common'),
+                '@main': resolve('src/main'),
+                '@resources': resolve('resources')
             }
-        },
-        plugins: [externalizeDepsPlugin()]
+        }
     },
     preload: {
         resolve: {
             alias: {
-                '@common': resolve('src/common')
+                '@common': resolve('src/common'),
+                '@lib': resolve('src/lib')
             }
-        },
-        plugins: [externalizeDepsPlugin()]
+        }
     },
     renderer: {
         resolve: {
