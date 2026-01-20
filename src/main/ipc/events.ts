@@ -15,14 +15,14 @@ export const ping = {
 
 export const getInjectionScript = {
     event: IpcChannels.GET_INJECTION_SCRIPT,
-    listener(event) {
-        logger.info('Received request for injected script');
-        const injectedPath = join(import.meta.dirname, '../renderer/inject.js');
+    listener: (event) => {
+        logger.info('Received request for injection script');
+        const injectPath = join(import.meta.dirname, '../renderer/inject.js');
         try {
-            event.returnValue = readFileSync(injectedPath, 'utf-8');
-            logger.info('Successfully read injected script from:', injectedPath);
+            event.returnValue = readFileSync(injectPath, 'utf-8');
+            logger.info('Successfully read injection script from:', injectPath);
         } catch (err) {
-            logger.error('Failed to read injected script from:', injectedPath, err);
+            logger.error('Failed to read injection script from:', injectPath, err);
             event.returnValue = '';
         }
     }
