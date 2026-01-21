@@ -1,17 +1,20 @@
 import { react, type ReactComponentWithReact, app } from '@lib/mods/dependencies/react';
 import { modMetadata, withDependencies, type Mod } from '@lib/mods';
+import { taggedLogger } from '@common/logger';
 
 const METADATA = modMetadata({
-    name: 'Test Component',
+    name: 'Test React Injection',
     description: 'A test component to verify React injection works.',
     version: '1.0.0'
 });
+
+const logger = taggedLogger(METADATA.id);
 
 const TestComponent = (({ React }) => {
     const ref = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
-        if (ref.current) console.warn('[Test Mod] Component element:', ref.current);
+        if (ref.current) logger.warn(ref.current);
     }, []);
 
     return (
@@ -51,6 +54,6 @@ export default {
         const root = ReactDOM.createRoot(container);
         root.render(<TestComponent React={React} />);
 
-        console.log('[Test Mod] Component mounted successfully!');
+        logger.log('Component mounted successfully!');
     })
 } satisfies Mod;
