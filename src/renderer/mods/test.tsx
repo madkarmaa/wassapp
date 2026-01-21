@@ -46,6 +46,8 @@ export default {
         app.appendChild(container);
 
         const root = ReactDOM.createRoot(container);
+
+        //                         vvvvvvvvvvvv FIXME: Must pass React module as prop for it to work
         root.render(<TestComponent React={React} />);
 
         logger.log('Component mounted successfully!');
