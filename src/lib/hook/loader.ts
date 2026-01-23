@@ -1,5 +1,5 @@
 import { taggedLogger } from '@common/logger';
-import { WA_AMD_DEFINE_METHOD, WA_DEFINE_METHOD } from '@common/constants';
+import { WA_DEFINE_METHOD, WA_D_METHOD } from '@common/constants';
 import type { JsModule, JsModuleFactory } from '@lib/types';
 import { patches } from './state';
 import { applyPatches } from './patcher';
@@ -71,6 +71,6 @@ export const hookModuleLoader = () => {
         }
     };
 
+    attach(WA_D_METHOD);
     attach(WA_DEFINE_METHOD);
-    attach(WA_AMD_DEFINE_METHOD);
 };

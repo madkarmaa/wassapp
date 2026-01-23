@@ -1,4 +1,5 @@
-import { type WA_AMD_DEFINE_METHOD, type WA_DEFINE_METHOD } from '@common/constants';
+import { APP_NAME, type WA_DEFINE_METHOD, type WA_D_METHOD } from '@common/constants';
+import { type ReactRef } from '@lib/hook/react';
 
 export type JsModuleFactory = (...args: unknown[]) => unknown;
 
@@ -18,7 +19,11 @@ export type JsModulesMap = Record<string, JsModule | null>;
 
 declare global {
     interface Window {
-        [WA_DEFINE_METHOD]: (...args: unknown[]) => void;
-        [WA_AMD_DEFINE_METHOD]: ((...args: unknown[]) => void) & { amd?: object };
+        [WA_D_METHOD]: (...args: unknown[]) => void;
+        [WA_DEFINE_METHOD]: ((...args: unknown[]) => void) & { amd?: object };
+        [APP_NAME]: {
+            ReactCreateElement: ReactRef['createElement'];
+            ReactFragment: ReactRef['Fragment'];
+        };
     }
 }

@@ -1,4 +1,4 @@
-import { react, type ReactComponentWithReact, app } from '@lib/mods/dependencies/react';
+import { app } from '@lib/mods/dependencies/app';
 import { modMetadata, withDependencies, type Mod } from '@lib/mods';
 import { taggedLogger } from '@common/logger';
 
@@ -10,8 +10,7 @@ const METADATA = modMetadata({
 
 const logger = taggedLogger(METADATA.id);
 
-//                        vvvvv FIXME: Must have React module in scope for it to work
-const TestComponent = (({ React }) => {
+const TestComponent = () => {
     return (
         <div
             style={{
@@ -33,23 +32,12 @@ const TestComponent = (({ React }) => {
             <p style={{ margin: 0, fontSize: '14px' }}>React component successfully injected!</p>
         </div>
     );
-}) satisfies ReactComponentWithReact;
+};
 
 export default {
     ...METADATA,
-    handler: withDependencies(
-        react,
-        app
-    )(async ({ React, ReactDOM, app }) => {
-        const container = document.createElement('div');
-        container.id = 'wsg-test-component';
-        app.appendChild(container);
-
-        const root = ReactDOM.createRoot(container);
-
-        //                         vvvvvvvvvvvv FIXME: Must pass React module as prop for it to work
-        root.render(<TestComponent React={React} />);
-
-        logger.log('Component mounted successfully!');
+    handler: withDependencies(app)(async ({ app }) => {
+        logger.warn(app);
+        logger.warn(TestComponent());
     })
 } satisfies Mod;

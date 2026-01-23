@@ -1,8 +1,12 @@
 import { taggedLogger } from '@common/logger';
 import type { Mod } from '@lib/mods';
 import { hookModuleLoader } from '@lib/hook';
+import { APP_NAME } from '@common/constants';
+import { enableReact } from '@lib/hook/react';
 
 const logger = taggedLogger('inject');
+
+if (!window[APP_NAME]) window[APP_NAME] = {} as Window[typeof APP_NAME];
 
 const loadMods = () => {
     const mods = import.meta.glob('./mods/*.{ts,tsx}', { eager: true });
@@ -22,5 +26,6 @@ const loadMods = () => {
     );
 };
 
+enableReact();
 loadMods();
 hookModuleLoader();
