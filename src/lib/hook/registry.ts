@@ -12,8 +12,7 @@ export const registerPatch = (moduleId: string, callback: PatchCallback) => {
     patches.get(moduleId)!.push(callback);
 
     // Attempt late patching via debug module if available
-    // `require` is made available at the same time as `__d`, so this is safe
-    if (window.require) {
+    if (window.require)
         try {
             const debug = window.require(WA_DEBUG_MODULE) as
                 | { modulesMap: JsModulesMap }
@@ -22,7 +21,6 @@ export const registerPatch = (moduleId: string, callback: PatchCallback) => {
         } catch {
             // ignore
         }
-    }
 
     logger.info(`Registered patch for ${moduleId}, waiting for definition...`);
 };

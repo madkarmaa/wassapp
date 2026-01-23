@@ -28,15 +28,18 @@ const wrapFactory = (moduleId: string, factory: JsModuleFactory): JsModuleFactor
         return ret;
     };
 
-export const hookModuleLoader = () => {
+export const hookModuleLoader = (...debugModules: string[]) => {
     logger.info('Initializing module loader hook...');
 
-    const createHook = (original: (...args: unknown[]) => void) => {
+    const createHook = (original: (...args: unknown[]) => void, methodName: string) => {
         const hooked = function (this: unknown, ...args: unknown[]) {
             const moduleId = args.find((arg): arg is string => typeof arg === 'string');
             const factoryIndex = args.findIndex((arg) => typeof arg === 'function');
 
             if (moduleId && factoryIndex !== -1) {
+                if (debugModules.includes(moduleId))
+                    logger.warn(`called window.${methodName} for`, moduleId, args);
+
                 let factory = args[factoryIndex] as JsModuleFactory;
                 if (patches.has(moduleId)) {
                     factory = wrapFactory(moduleId, factory);
@@ -55,7 +58,7 @@ export const hookModuleLoader = () => {
 
     const attach = (methodName: string) => {
         if (window[methodName]) {
-            window[methodName] = createHook(window[methodName]);
+            window[methodName] = createHook(window[methodName], methodName);
             logger.info(`Hooked existing window.${methodName}`);
         } else {
             let _val: unknown;
@@ -64,13 +67,13 @@ export const hookModuleLoader = () => {
                 enumerable: true,
                 get: () => _val,
                 set: (value) => {
-                    _val = createHook(value);
+                    _val = createHook(value, methodName);
                     logger.info(`Hooked new window.${methodName} assignment`);
                 }
             });
         }
     };
 
-    attach(WA_D_METHOD);
+    attach(WA_D_METHOD); // this seems to be the module loader
     attach(WA_DEFINE_METHOD);
 };

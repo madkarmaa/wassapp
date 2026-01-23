@@ -27,4 +27,4 @@ const loadMods = () => {
 };
 
 loadMods();
-hookModuleLoader();
+hookModuleLoader('React', 'ReactDOM');

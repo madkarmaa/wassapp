@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { readFileSync } from 'fs';
+import { is } from '@electron-toolkit/utils';
 import { IpcChannels } from '@common/constants';
 import { taggedLogger } from '@common/logger';
 
@@ -25,5 +26,12 @@ export const getInjectionScript = {
             logger.error('Failed to read injection script from:', injectPath, err);
             event.returnValue = '';
         }
+    }
+} satisfies IpcEvent;
+
+export const isDev = {
+    event: IpcChannels.IS_DEV,
+    listener: (event) => {
+        event.returnValue = is.dev;
     }
 } satisfies IpcEvent;
