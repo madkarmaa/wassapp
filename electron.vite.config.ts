@@ -33,7 +33,8 @@ export default defineConfig({
         resolve: {
             alias: {
                 '@common': resolve('src/common'),
-                '@lib': resolve('src/lib')
+                '@lib': resolve('src/lib'),
+                '@resources': resolve('resources')
             }
         },
         esbuild: {

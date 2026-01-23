@@ -9,9 +9,7 @@
             "@common": ["src/common"],
             "@common/*": ["src/common/*"],
             "@main": ["src/main"],
-            "@main/*": ["src/main/*"],
-            "@resources": ["resources"],
-            "@resources/*": ["resources/*"]
+            "@main/*": ["src/main/*"]
         }
     }
 }

@@ -1,7 +1,6 @@
 import { patchModule } from '@lib/modules';
 import { modMetadata, type Mod } from '@lib/mods';
 
-const MODULE_ID = 'WAWebDesktopUpsellUtils' as const;
 type Exports = {
     getUserDesktopOs: () => string | null;
 };
@@ -15,7 +14,7 @@ const METADATA = modMetadata({
 export default {
     ...METADATA,
     handler: () =>
-        patchModule<Exports>(MODULE_ID, (exports) => {
+        patchModule<Exports>('WAWebDesktopUpsellUtils', (exports) => {
             exports.getUserDesktopOs = () => null;
         })
 } satisfies Mod;

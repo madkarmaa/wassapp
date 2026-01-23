@@ -1,6 +1,11 @@
 {
     "compilerOptions": {
-        "types": ["vite/client"]
+        "composite": true,
+        "types": ["vite/client"],
+        "paths": {
+            "@resources": ["resources"],
+            "@resources/*": ["resources/*"]
+        }
     },
     "files": ["src/globals.d.ts"]
 }
