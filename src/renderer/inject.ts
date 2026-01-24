@@ -9,7 +9,7 @@ const logger = taggedLogger('inject');
 if (!window[APP_NAME]) window[APP_NAME] = {} as Window[typeof APP_NAME];
 
 const loadMods = () => {
-    const mods = import.meta.glob('./mods/*.{ts,tsx}', { eager: true });
+    const mods = import.meta.glob('./mods/**/*.{ts,tsx}', { eager: true });
 
     Promise.all(
         Object.entries(mods).map(async ([path, modImport]) => {

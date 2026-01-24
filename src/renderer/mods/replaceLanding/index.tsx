@@ -1,7 +1,7 @@
 import { APP_NAME } from '@common/constants';
 import { modMetadata, type Mod } from '@lib/mods';
 import { patchModule } from '@lib/modules';
-import cat from '@resources/cat.gif?inline';
+import cat from './cat.gif?inline';
 
 const METADATA = modMetadata({
     name: 'Replace Landing Component',
@@ -9,7 +9,7 @@ const METADATA = modMetadata({
     version: '1.0.0'
 });
 
-const Landing = () => {
+const NewLanding = () => {
     return (
         <div
             style={{
@@ -42,7 +42,7 @@ const Landing = () => {
 export default {
     ...METADATA,
     handler: () =>
-        patchModule<{ default: object }>('WAWebIntroPanelV2.react', (exports) => {
-            exports.default = Landing;
+        patchModule<{ default: typeof NewLanding }>('WAWebIntroPanelV2.react', (exports) => {
+            exports.default = NewLanding;
         })
 } satisfies Mod;
