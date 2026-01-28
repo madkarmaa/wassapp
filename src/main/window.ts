@@ -3,10 +3,10 @@ import { join } from 'path';
 import { is } from '@electron-toolkit/utils';
 import {
     APP_NAME,
-    DEFAULT_HEIGHT,
-    DEFAULT_WIDTH,
-    MIN_HEIGHT,
-    MIN_WIDTH,
+    WIN_DEFAULT_HEIGHT,
+    WIN_DEFAULT_WIDTH,
+    WIN_MIN_HEIGHT,
+    WIN_MIN_WIDTH,
     WA_WEB_URL
 } from '@common/constants';
 import icon from '@resources/icon.png?asset';
@@ -16,10 +16,10 @@ const USER_AGENT =
 
 export const createWindow = () => {
     const mainWindow = new BrowserWindow({
-        width: DEFAULT_WIDTH,
-        minWidth: MIN_WIDTH,
-        height: DEFAULT_HEIGHT,
-        minHeight: MIN_HEIGHT,
+        width: WIN_DEFAULT_WIDTH,
+        minWidth: WIN_MIN_WIDTH,
+        height: WIN_DEFAULT_HEIGHT,
+        minHeight: WIN_MIN_HEIGHT,
         center: true,
         show: false,
         autoHideMenuBar: true,

@@ -1,12 +1,20 @@
 import { taggedLogger } from '@common/logger';
 import type { Mod } from '@lib/mods';
 import { hookModuleLoader } from '@lib/hook';
-import { APP_NAME } from '@common/constants';
+import { APP_NAME, APP_ASCII_ART, WA_MAIN_COLOR } from '@common/constants';
 import '@lib/hook/react';
 
 const logger = taggedLogger('inject');
 
 if (!window[APP_NAME]) window[APP_NAME] = {} as Window[typeof APP_NAME];
+
+console.log(
+    `%c${APP_ASCII_ART}%c\n\nUse %crequire('__debug')['modulesMap']['<MODULE_ID>']%c to access a module's structure.`,
+    `color: ${WA_MAIN_COLOR};`,
+    '',
+    'color: #FF6F61; font-weight: bold;',
+    ''
+);
 
 const loadMods = () => {
     const mods = import.meta.glob('./mods/**/*.{ts,tsx}', { eager: true });
@@ -27,4 +35,4 @@ const loadMods = () => {
 };
 
 loadMods();
-hookModuleLoader('React', 'ReactDOM');
+hookModuleLoader();
