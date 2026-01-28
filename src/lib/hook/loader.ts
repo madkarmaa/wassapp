@@ -4,7 +4,7 @@ import type { JsModule, JsModuleFactory } from '@lib/types';
 import { patches } from './state';
 import { applyPatches } from './patcher';
 
-const logger = taggedLogger('hook');
+const logger = taggedLogger('hook', 'loader');
 
 const wrapFactory = (moduleId: string, factory: JsModuleFactory): JsModuleFactory =>
     function (this: unknown, ...args: unknown[]) {

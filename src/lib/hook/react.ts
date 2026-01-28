@@ -2,7 +2,7 @@ import { taggedLogger } from '@common/logger';
 import { waitForModule } from '@lib/modules';
 import type * as ReactType from 'react';
 
-const logger = taggedLogger('react-hook');
+const logger = taggedLogger('hook', 'react');
 
 export type ReactRef = typeof ReactType;
 

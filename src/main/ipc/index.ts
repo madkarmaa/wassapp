@@ -2,7 +2,7 @@ import { ipcMain } from 'electron';
 import { taggedLogger } from '@common/logger';
 import * as events from './events';
 
-const logger = taggedLogger('ipc-main-setup');
+const logger = taggedLogger('ipc-main', 'setup');
 
 export const setupIpcHandlers = () => {
     for (const { event, listener } of Object.values(events)) {
