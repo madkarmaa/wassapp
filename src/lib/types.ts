@@ -13,3 +13,5 @@ export type ReadyJsModule<Exports extends object = object> = JsModuleBase & {
 };
 
 export type JsModulesMap = Record<string, JsModule | null>;
+
+export type Class<T extends object = object> = new (...args: unknown[]) => T;

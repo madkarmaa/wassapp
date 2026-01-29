@@ -5,6 +5,7 @@ import {
     type WA_DEFINE_METHOD,
     type WA_D_METHOD
 } from '@common/constants';
+import { type ElectronAPI } from '@electron-toolkit/preload';
 
 declare global {
     const __brand: unique symbol;
@@ -21,6 +22,7 @@ declare global {
             ReactFragment: ReactRef['Fragment'];
         };
         [APP_DEV_MODE_KEY]: boolean;
+        electron: ElectronAPI;
     }
 }
 

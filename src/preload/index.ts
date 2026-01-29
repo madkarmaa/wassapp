@@ -1,7 +1,8 @@
 import { webFrame, ipcRenderer, contextBridge } from 'electron';
-import css from './style.css?inline';
+import { electronAPI } from '@electron-toolkit/preload';
 import { taggedLogger } from '@common/logger';
 import { APP_DEV_MODE_KEY, IpcChannels } from '@common/constants';
+import css from './style.css?inline';
 
 const logger = taggedLogger('preload');
 
@@ -32,6 +33,8 @@ contextBridge.exposeInMainWorld(
     APP_DEV_MODE_KEY,
     ipcRenderer.sendSync(IpcChannels.IS_DEV.toString())
 );
+
+contextBridge.exposeInMainWorld('electron', electronAPI);
 
 injectScript();
 injectCSS();

@@ -27,6 +27,12 @@ export default defineConfig({
                 '@common': resolve('src/common'),
                 '@lib': resolve('src/lib')
             }
+        },
+        // https://electron-vite.org/guide/dependency-handling#customizing
+        build: {
+            externalizeDeps: {
+                exclude: ['@electron-toolkit/preload']
+            }
         }
     },
     renderer: {
