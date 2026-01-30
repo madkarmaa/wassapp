@@ -1,5 +1,5 @@
 import { taggedLogger } from '@common/logger';
-import { waitForModule } from '@lib/modules';
+import { patchModule } from '@lib/modules';
 import type * as ReactType from 'react';
 
 const logger = taggedLogger('hook', 'react');
@@ -15,14 +15,12 @@ export let useRef: typeof React.useRef;
 export let useReducer: typeof React.useReducer;
 export let useCallback: typeof React.useCallback;
 
-const enableReact = async () => {
-    React = await waitForModule<ReactRef>('React');
+patchModule('React', (reactModule) => {
+    React = reactModule as ReactRef;
     ({ useState, useEffect, useLayoutEffect, useMemo, useRef, useReducer, useCallback } = React);
 
     window.WSG.ReactCreateElement = React.createElement;
     window.WSG.ReactFragment = React.Fragment;
 
     logger.info('React is available');
-};
-
-enableReact();
+});
