@@ -45,7 +45,7 @@ const install = (requireLazy: RuntimeRequireLazy) => {
 
 // WA uses requireLazy() to load modules lazily
 // require() is also defined, but never used
-const hookRequireLazy = () => {
+(() => {
     if (window[WA_REQUIRELAZY_METHOD]) install(window[WA_REQUIRELAZY_METHOD]);
     else
         Object.defineProperty(window, WA_REQUIRELAZY_METHOD, {
@@ -54,6 +54,4 @@ const hookRequireLazy = () => {
             get: () => _runtimeReqLazy,
             set: (value) => install(value)
         });
-};
-
-hookRequireLazy();
+})();
