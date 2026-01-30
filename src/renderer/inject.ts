@@ -2,6 +2,8 @@ import { taggedLogger, setLogLevel, LogLevel } from '@common/logger';
 import type { Mod } from '@lib/mods';
 import { hookModuleLoader } from '@lib/hook';
 import { APP_NAME, APP_ASCII_ART, WA_MAIN_COLOR } from '@common/constants';
+
+import '@lib/hook/require';
 import '@lib/hook/react';
 
 const logger = taggedLogger('inject');
