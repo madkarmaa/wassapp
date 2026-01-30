@@ -23,5 +23,5 @@ reqLazy<[typeof REACT_MODULE_ID], [ReactRef]>([REACT_MODULE_ID], (_react) => {
     window.WSG.ReactCreateElement = React.createElement;
     window.WSG.ReactFragment = React.Fragment;
 
-    logger.info('React is available');
+    logger.info(`React v${React.version} hooked`);
 });
