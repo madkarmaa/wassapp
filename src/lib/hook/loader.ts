@@ -74,6 +74,6 @@ export const hookModuleLoader = (...debugModules: string[]) => {
         }
     };
 
-    attach(WA_D_METHOD); // this seems to be the module loader
+    attach(WA_D_METHOD); // this seems to be the main module definition method
     attach(WA_DEFINE_METHOD);
 };
