@@ -20,8 +20,6 @@ export const registerPatch = (moduleId: string, callback: PatchCallback) => {
     //     } catch {
     //         // ignore
     //     }
-
-    logger.info(`Registered patch for ${moduleId}, waiting for definition...`);
 };
 
 export const applyPatches = (moduleId: string, exports: object) => {
@@ -31,7 +29,6 @@ export const applyPatches = (moduleId: string, exports: object) => {
     callbacks.forEach((callback) => {
         try {
             callback(exports);
-            logger.info(`Patched module ${moduleId} successfully`);
         } catch (err) {
             logger.error(`Error patching module ${moduleId}`, err);
         }
