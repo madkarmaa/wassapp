@@ -1,8 +1,9 @@
 import { taggedLogger } from '@common/logger';
-import { patchModule } from '@lib/modules';
+import { requireLazy } from './require';
 import type * as ReactType from 'react';
 
 const logger = taggedLogger('hook', 'react');
+const REACT_MODULE_ID = 'React' as const;
 
 export type ReactRef = typeof ReactType;
 
@@ -15,8 +16,8 @@ export let useRef: typeof React.useRef;
 export let useReducer: typeof React.useReducer;
 export let useCallback: typeof React.useCallback;
 
-patchModule('React', (reactModule) => {
-    React = reactModule as ReactRef;
+requireLazy<[typeof REACT_MODULE_ID], [ReactRef]>([REACT_MODULE_ID], (_react) => {
+    React = _react;
     ({ useState, useEffect, useLayoutEffect, useMemo, useRef, useReducer, useCallback } = React);
 
     window.WSG.ReactCreateElement = React.createElement;
