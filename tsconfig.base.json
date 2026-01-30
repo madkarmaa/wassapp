@@ -7,5 +7,5 @@
             "@resources/*": ["resources/*"]
         }
     },
-    "files": ["src/globals.d.ts"]
+    "files": ["./src/globals.d.ts"]
 }

@@ -1,9 +1,9 @@
-import { type ReactRef } from '@lib/hook/react';
 import {
     type APP_DEV_MODE_KEY,
     type APP_NAME,
+    type WA_D_METHOD,
     type WA_DEFINE_METHOD,
-    type WA_D_METHOD
+    type WA_REQUIRELAZY_METHOD
 } from '@common/constants';
 import { type ElectronAPI } from '@electron-toolkit/preload';
 
@@ -16,12 +16,15 @@ declare global {
 
     interface Window {
         [WA_D_METHOD]: (...args: unknown[]) => void;
-        [WA_DEFINE_METHOD]: ((...args: unknown[]) => void) & { amd: object };
+        [WA_DEFINE_METHOD]: (...args: unknown[]) => void;
+        [WA_REQUIRELAZY_METHOD]: import('./lib/hook/require').RequireLazy;
+
         [APP_NAME]: {
-            ReactCreateElement: ReactRef['createElement'];
-            ReactFragment: ReactRef['Fragment'];
+            ReactCreateElement: import('./lib/hook/react').ReactRef['createElement'];
+            ReactFragment: import('./lib/hook/react').ReactRef['Fragment'];
         };
         [APP_DEV_MODE_KEY]: boolean;
+
         electron: ElectronAPI;
     }
 }
