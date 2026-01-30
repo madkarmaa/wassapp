@@ -17,26 +17,26 @@ type RuntimeRequireLazy = (
     callback: RuntimeRequireLazyCallback
 ) => void;
 
-let realRequireLazy: RuntimeRequireLazy | undefined = undefined;
+let _runtimeReqLazy: RuntimeRequireLazy | undefined = undefined;
 const queue: Parameters<RuntimeRequireLazy>[] = [];
 
-export const requireLazy: RequireLazy = (moduleIds, callback) => {
-    if (realRequireLazy) realRequireLazy(moduleIds, callback as RuntimeRequireLazyCallback);
+export const reqLazy: RequireLazy = (moduleIds, callback) => {
+    if (_runtimeReqLazy) _runtimeReqLazy(moduleIds, callback as RuntimeRequireLazyCallback);
     else queue.push([moduleIds, callback as RuntimeRequireLazyCallback]);
 };
 
-export const requireLazyAsync = <
+export const reqLazyAsync = <
     const Ids extends readonly string[],
     TModules extends { [K in keyof Ids]: object }
 >(
     moduleIds: Ids
 ) =>
     new Promise<TModules>((resolve) => {
-        requireLazy<Ids, TModules>(moduleIds, (...modules) => resolve(modules));
+        reqLazy<Ids, TModules>(moduleIds, (...modules) => resolve(modules));
     });
 
 const install = (requireLazy: RuntimeRequireLazy) => {
-    realRequireLazy = requireLazy;
+    _runtimeReqLazy = requireLazy;
     logger.info(`${WA_REQUIRELAZY_METHOD} is now available`);
 
     for (const args of queue) requireLazy(...args);
@@ -49,7 +49,7 @@ const hookRequireLazy = () => {
         Object.defineProperty(window, WA_REQUIRELAZY_METHOD, {
             configurable: true,
             enumerable: true,
-            get: () => realRequireLazy,
+            get: () => _runtimeReqLazy,
             set: (value) => install(value)
         });
 };

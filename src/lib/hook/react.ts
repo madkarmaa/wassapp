@@ -1,5 +1,5 @@
 import { taggedLogger } from '@common/logger';
-import { requireLazy } from './require';
+import { reqLazy } from './require';
 import type * as ReactType from 'react';
 
 const logger = taggedLogger('hook', 'react');
@@ -16,7 +16,7 @@ export let useRef: typeof React.useRef;
 export let useReducer: typeof React.useReducer;
 export let useCallback: typeof React.useCallback;
 
-requireLazy<[typeof REACT_MODULE_ID], [ReactRef]>([REACT_MODULE_ID], (_react) => {
+reqLazy<[typeof REACT_MODULE_ID], [ReactRef]>([REACT_MODULE_ID], (_react) => {
     React = _react;
     ({ useState, useEffect, useLayoutEffect, useMemo, useRef, useReducer, useCallback } = React);
 
