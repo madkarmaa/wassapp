@@ -1,5 +1,5 @@
-import { patchModule } from '@lib/modules';
-import { modMetadata, type Mod } from '@lib/mods';
+import { modMetadata, withDependencies, type Mod } from '@lib/mods';
+import { ABFlags } from '@lib/mods/dependencies/ab';
 
 const METADATA = modMetadata({
     name: 'Enable Calls',
@@ -9,17 +9,10 @@ const METADATA = modMetadata({
 
 export default {
     ...METADATA,
-    handler: () =>
-        patchModule<{
-            default: {
-                getEnvironment: () => 'prod' | 'intern' | 'dev';
-                isGuest: boolean;
-                isWeb: boolean;
-                isWindows: boolean;
-            };
-        }>('WAWebEnvironment', (exports) => {
-            exports.default.getEnvironment = () => 'prod';
-            exports.default.isWeb = false;
-            exports.default.isWindows = true;
-        })
+    handler: withDependencies(ABFlags)(({ overwriteABFlag }) => {
+        overwriteABFlag('enable_web_calling', true);
+        overwriteABFlag('enable_web_group_calling', true);
+        overwriteABFlag('enable_web_calls_tab', true);
+        overwriteABFlag('enable_web_call_link', true);
+    })
 } satisfies Mod;

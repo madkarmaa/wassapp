@@ -15,3 +15,9 @@ export const modMetadata = (metadata: OmitFix<ModMetadata, 'id'>): ModMetadata =
     description: metadata.description.trim(),
     version: metadata.version
 });
+
+export const getPropertyNames = <T extends object>(obj: T): (keyof T)[] =>
+    [
+        ...Object.getOwnPropertyNames(obj),
+        ...Object.getOwnPropertyNames(Object.getPrototypeOf(obj))
+    ].filter((key) => key !== 'constructor') as (keyof T)[];
