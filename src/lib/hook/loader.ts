@@ -6,12 +6,11 @@ import { applyPatches } from './patcher';
 
 const logger = taggedLogger('hook', 'loader');
 
-const wrapFactory = (moduleId: string, factory: JsModuleFactory): JsModuleFactory =>
-    function (this: unknown, ...args: unknown[]) {
+const wrapFactory = (moduleId: string, factory: JsModuleFactory): JsModuleFactory => {
+    const wrapped = function (this: unknown, ...args: unknown[]) {
         const ret = factory.apply(this, args);
 
         let moduleObj: JsModule | null = null;
-
         for (const arg of args)
             if (
                 arg &&
@@ -27,6 +26,10 @@ const wrapFactory = (moduleId: string, factory: JsModuleFactory): JsModuleFactor
 
         return ret;
     };
+
+    Object.defineProperty(wrapped, 'length', { value: factory.length });
+    return wrapped;
+};
 
 export const hookModuleLoader = (...debugModules: string[]) => {
     const createHook = (original: (...args: unknown[]) => void, methodName: string) => {
