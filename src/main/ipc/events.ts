@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { resolve } from 'path';
 import { readFileSync } from 'fs';
 import { is } from '@electron-toolkit/utils';
 import { IpcChannels } from '@common/constants';
@@ -17,8 +17,9 @@ export const ping = {
 export const getInjectionScript = {
     event: IpcChannels.GET_INJECTION_SCRIPT,
     listener: (event) => {
-        logger.info('Received request for injection script');
-        const injectPath = join(import.meta.dirname, '../renderer/inject.js');
+        logger.verbose('Received request for injection script');
+        const injectPath = resolve(import.meta.dirname, '../renderer/inject.js');
+
         try {
             event.returnValue = readFileSync(injectPath, 'utf-8');
             logger.info('Successfully read injection script from:', injectPath);

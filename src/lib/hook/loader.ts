@@ -29,8 +29,6 @@ const wrapFactory = (moduleId: string, factory: JsModuleFactory): JsModuleFactor
     };
 
 export const hookModuleLoader = (...debugModules: string[]) => {
-    logger.info('Initializing module loader hook...');
-
     const createHook = (original: (...args: unknown[]) => void, methodName: string) => {
         const hooked = function (this: unknown, ...args: unknown[]) {
             const moduleId = args.find((arg): arg is string => typeof arg === 'string');
@@ -38,7 +36,7 @@ export const hookModuleLoader = (...debugModules: string[]) => {
 
             if (moduleId && factoryIndex !== -1) {
                 if (debugModules.includes(moduleId))
-                    logger.warn(`called window.${methodName} for`, moduleId, args);
+                    logger.debug(`called window.${methodName} for`, moduleId, args);
 
                 let factory = args[factoryIndex] as JsModuleFactory;
                 if (patches.has(moduleId)) {
@@ -75,5 +73,5 @@ export const hookModuleLoader = (...debugModules: string[]) => {
     };
 
     attach(WA_D_METHOD); // this seems to be the main module definition method
-    attach(WA_DEFINE_METHOD);
+    attach(WA_DEFINE_METHOD); // but sometimes this one is also used for some strangely named modules
 };

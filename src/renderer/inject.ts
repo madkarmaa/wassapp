@@ -24,7 +24,9 @@ const loadMods = () => {
     Promise.all(
         Object.entries(mods).map(async ([path, modImport]) => {
             const mod = modImport as { default?: Mod };
-            if (!mod.default) return logger.warn(`Mod ${path} has no default export, skipping`);
+
+            if (!mod.default || typeof mod.default.id !== 'string')
+                return logger.verbose(`Mod ${path} has no default export, skipping`);
 
             try {
                 await mod.default.handler();
@@ -36,6 +38,6 @@ const loadMods = () => {
     );
 };
 
-setLogLevel(window.__WSG_dev_mode ? LogLevel.INFO : LogLevel.WARN);
-loadMods();
+setLogLevel(window.__WSG_dev_mode ? LogLevel.VERBOSE : LogLevel.WARN);
 hookModuleLoader();
+loadMods();

@@ -9,6 +9,7 @@ const logger = taggedLogger('preload');
 const injectScript = () => {
     try {
         const script = ipcRenderer.sendSync(IpcChannels.GET_INJECTION_SCRIPT.toString());
+
         if (script && typeof script === 'string') {
             logger.info('Injecting script into renderer process...');
             webFrame.executeJavaScript(script);

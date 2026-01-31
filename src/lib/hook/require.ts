@@ -37,7 +37,7 @@ export const reqLazyAsync = <
 
 const install = (requireLazy: RuntimeRequireLazy) => {
     _runtimeReqLazy = requireLazy;
-    logger.info(`${WA_REQUIRELAZY_METHOD} is now available`);
+    logger.verbose(`${WA_REQUIRELAZY_METHOD} is now available`);
 
     for (const args of queue) requireLazy(...args);
     queue.length = 0;

@@ -20,4 +20,6 @@ export const applyPatches = (moduleId: string, exports: object) => {
             logger.error(`Error patching module ${moduleId}`, err);
         }
     });
+
+    logger.verbose(`Applied ${callbacks.length} patch(es) to module ${moduleId}`);
 };
